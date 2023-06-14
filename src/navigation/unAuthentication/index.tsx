@@ -7,6 +7,7 @@ import {View} from 'react-native';
 import {HomeScreen} from '@screens/unAuth/home';
 import {APP_SCREEN, HomeStackParamList} from '@utilities/types';
 import isEqual from 'react-fast-compare';
+import {AddDonationScreen} from '@components/screens/unAuth/addDonation';
 
 const Stack = createNativeStackNavigator<HomeStackParamList>();
 
@@ -23,6 +24,11 @@ const UnAuthenticationTab: FC = () => {
         <Stack.Screen
           name={APP_SCREEN.HOME}
           component={HomeScreen}
+          options={options}
+        />
+        <Stack.Screen
+          name={APP_SCREEN.ADD_DONATION}
+          component={AddDonationScreen}
           options={options}
         />
       </Stack.Navigator>

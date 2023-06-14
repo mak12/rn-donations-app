@@ -1,16 +1,20 @@
 import {useEffect, useState} from 'react';
 import {API} from '@lib/API';
-import {IDonationsResponse} from '@models/APIModels';
+import {IDonationLocationsResponse} from '@models/APIModels';
 import {APP_URLS} from '@utilities/constants';
 
-const useGetDonations = () => {
-  const [data, setData] = useState<IDonationsResponse[] | null>(null);
+const useGetDonationLocations = () => {
+  const [data, setData] = useState<IDonationLocationsResponse[] | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [isError, setIsError] = useState<boolean>(false);
 
+  useEffect(() => {
+    fetchData();
+  }, []);
+
   const fetchData = async () => {
     await API()
-      .get<IDonationsResponse[]>(APP_URLS.GET_DONATIONS)
+      .get<IDonationLocationsResponse[]>(APP_URLS.GET_DONATION_LOCATIONS)
       .then(res => setData(res.data))
       .catch(err => {
         setIsError(true);
@@ -19,7 +23,7 @@ const useGetDonations = () => {
       .finally(() => setIsLoading(false));
   };
 
-  return {data, isError, isLoading, fetchData};
+  return {data, isError, isLoading};
 };
 
-export default useGetDonations;
+export default useGetDonationLocations;

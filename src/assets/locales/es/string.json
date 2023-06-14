@@ -49,7 +49,11 @@
     "paymentAmount": "Payment Amount",
     "requestProcessing": "Your request is now processing.",
     "need_help": "Need Help?",
-    "chooseOption": "Choose Option"
+    "chooseOption": "Choose Option",
+    "price": "Price",
+    "status": "Status",
+    "location": "Location",
+    "theme": "Theme"
   },
   "question": {
     "yes": "Yes",
@@ -59,5 +63,19 @@
   "empty_list": {
     "empty_list": "Empty list",
     "empty_product": "The product list is empty"
+  },
+  "homeScreen": {
+    "statusDropdownTitle": "Choose status",
+    "statusDropdownPlaceHolder": "active etc.."
+  },
+  "addDonationScreen": {
+    "title": "Add new donation",
+    "nameInputHeading": "Enter donation name",
+    "amountInputHeading": "Enter donation amount (GBP)",
+    "locationDropdownTitle": "Choose location",
+    "locationDropdownPlaceHolder": "uk etc..",
+    "themeDropdownTitle": "Choose status",
+    "themeDropdownPlaceHolder": "food etc..",
+    "addDonationButton": "Add Donation"
   }
 }

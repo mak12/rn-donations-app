@@ -44,3 +44,27 @@ export interface IDonationsResponse {
   price?: IPrice;
   status: IStatus;
 }
+
+export interface IDonationStatusesResponse {
+  id: string;
+  name: string;
+}
+export interface IDonationThemesResponse {
+  id: string;
+  name: string;
+}
+
+export interface IDonationLocationsResponse {
+  id: string;
+  name: string;
+}
+
+export interface IAddDonationRequest {
+  name: string;
+  location: string;
+  theme: string;
+  price: {
+    currencyCode: string;
+    amount: number;
+  };
+}
