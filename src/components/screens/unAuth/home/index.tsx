@@ -47,7 +47,6 @@ const HomeScreenComp: React.FC<HomeScreenProps> = () => {
   const [fileredDonations, setFileredDonations] = useState<
     IDonationsResponse[]
   >([]);
-  console.log('data from api ', isLoading);
 
   useEffect(() => {
     if (data) setFileredDonations(data);
