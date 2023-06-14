@@ -1,4 +1,4 @@
-package com.boilerplate;
+package com.donations;
 
 import android.app.Application;
 import com.facebook.react.PackageList;
