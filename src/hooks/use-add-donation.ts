@@ -2,6 +2,7 @@ import {useState} from 'react';
 import {API} from '@lib/API';
 import {IAddDonationRequest, IDonationsResponse} from '@models/APIModels';
 import {APP_URLS} from '@utilities/constants';
+import {showAlertDialog} from '@utilities/utils';
 
 const useAddDonation = () => {
   const [data, setData] = useState<IDonationsResponse | null>(null);
@@ -17,6 +18,7 @@ const useAddDonation = () => {
       .catch(err => {
         setIsError(true);
         setData(null);
+        showAlertDialog('Some error occurred, Please try again.');
       })
       .finally(() => setIsLoading(false));
   };
