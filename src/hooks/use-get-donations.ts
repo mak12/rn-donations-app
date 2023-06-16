@@ -1,27 +1,30 @@
-import {useEffect, useState} from 'react';
+import {useState} from 'react';
 import {API} from '@lib/API';
 import {IDonationsResponse} from '@models/APIModels';
 import {APP_URLS} from '@utilities/constants';
 import {showAlertDialog} from '@utilities/utils';
+import {useDonationContext} from 'src/context/DonationsContext';
 
 const useGetDonations = () => {
-  const [data, setData] = useState<IDonationsResponse[] | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [isError, setIsError] = useState<boolean>(false);
-
+  const {setDonations} = useDonationContext();
   const fetchData = async () => {
     await API()
       .get<IDonationsResponse[]>(APP_URLS.GET_DONATIONS)
-      .then(res => setData(res.data))
+      .then(res => {
+        setIsError(false);
+        setDonations(res.data);
+      })
       .catch(err => {
         setIsError(true);
-        setData(null);
+        setDonations(undefined);
         showAlertDialog('Some error occurred, Please try again.');
       })
       .finally(() => setIsLoading(false));
   };
 
-  return {data, isError, isLoading, fetchData};
+  return {isError, isLoading, fetchData};
 };
 
 export default useGetDonations;

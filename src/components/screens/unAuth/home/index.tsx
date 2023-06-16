@@ -15,6 +15,7 @@ import {DonationsListItem} from './DonationsListItem';
 import {AppSelect} from '@common/appSelect';
 import {useTranslation} from 'react-i18next';
 import useGetDonationStatuses from '@hooks/use-get-donation-statuses';
+import {useDonationContext} from 'src/context/DonationsContext';
 
 interface IStyles {
   listContainerStyle: ViewStyle;
@@ -41,16 +42,17 @@ const HomeScreenComp: React.FC<HomeScreenProps> = () => {
   const {t} = useTranslation();
   const isFocused = useIsFocused();
 
-  const {data, isLoading, fetchData} = useGetDonations();
+  const {isLoading, fetchData} = useGetDonations();
   const {data: statuses} = useGetDonationStatuses();
+  const {donations} = useDonationContext();
 
   const [fileredDonations, setFileredDonations] = useState<
     IDonationsResponse[]
   >([]);
 
   useEffect(() => {
-    if (data) setFileredDonations(data);
-  }, [data]);
+    if (donations) setFileredDonations(donations);
+  }, [donations]);
 
   useEffect(() => {
     fetchData();
@@ -71,7 +73,7 @@ const HomeScreenComp: React.FC<HomeScreenProps> = () => {
 
   const handleStatusesValueChanged = (statusId: string) => {
     const filteredData =
-      data?.filter(item => item.status.id === statusId) ?? [];
+      donations?.filter(item => item.status.id === statusId) ?? [];
     setFileredDonations(filteredData);
   };
 

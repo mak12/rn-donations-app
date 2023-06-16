@@ -1,10 +1,9 @@
-import React, {memo, useEffect, useMemo, useState} from 'react';
+import React, {memo, useEffect, useMemo} from 'react';
 import {APP_SCREEN, HomeStackParamList} from '@utilities/types';
 import {useNavigation} from '@react-navigation/native';
 import isEqual from 'react-fast-compare';
 import {Image, Pressable, Select, useToast, VStack} from 'native-base';
 import {AppHeading} from '@common/appHeading';
-import {getExceptionPayload, showAlertDialog} from '@utilities/utils';
 import {Formik} from 'formik';
 import {AuthInput} from '@common/authInput';
 
@@ -23,6 +22,8 @@ import useGetDonationLocations from '@hooks/use-get-donation-locations';
 import {AppSelect} from '@common/appSelect';
 import useAddDonation from '@hooks/use-add-donation';
 import {IAddDonationRequest} from '@models/APIModels';
+import {AuthTextArea} from '@common/authTextArea';
+import {useDonationContext} from 'src/context/DonationsContext';
 
 type AddDonationScreenProps = NativeStackScreenProps<
   HomeStackParamList,
@@ -60,14 +61,26 @@ const AddDonationScreenComp: React.FC<AddDonationScreenProps> = ({route}) => {
     isError,
     fetchData,
   } = useAddDonation(); //lazy hook
+  const {donations} = useDonationContext();
+
+  const oldDonationsNames = useMemo(() => {
+    return donations ? donations.map(item => item.name) : [];
+  }, [donations]); //To check if the donation name already exists or not
 
   const formValidation = useMemo(
     () =>
       Yup.object().shape({
-        name: Yup.string().required('Enter name'),
+        name: Yup.string()
+          .min(1, "Name can't be less than 1 character")
+          .max(200, "Name can't be more than 200 characters")
+          .notOneOf(oldDonationsNames, 'Name must be unique')
+          .required('Enter name'),
         locationId: Yup.string().required('Select location'),
         themeId: Yup.string().required('Select theme'),
-        amount: Yup.string().optional(),
+        amount: Yup.number()
+          .min(1, 'Must be greater than zero')
+          .typeError('Amount must be a number')
+          .optional(),
       }),
     [],
   );
@@ -101,10 +114,6 @@ const AddDonationScreenComp: React.FC<AddDonationScreenProps> = ({route}) => {
   }, [donationLocations]);
 
   useEffect(() => {
-    if (isError) {
-      showAlertDialog('Sommer Error Occured');
-      return;
-    }
     if (addDonationData) {
       toast.show({
         description: 'Successfully added',
@@ -145,7 +154,7 @@ const AddDonationScreenComp: React.FC<AddDonationScreenProps> = ({route}) => {
           }}>
           {({errors, handleChange, handleBlur, handleSubmit, values}) => (
             <>
-              <AuthInput
+              <AuthTextArea
                 heading={t('addDonationScreen:nameInputHeading')}
                 onChangeText={handleChange('name')}
                 onBlur={handleBlur('name')}
@@ -155,7 +164,7 @@ const AddDonationScreenComp: React.FC<AddDonationScreenProps> = ({route}) => {
                 containerProps={{
                   mt: 3,
                 }}
-                numberOfLines={1}
+                totalLines={3}
                 error={errors.name}
               />
               <AppSelect
